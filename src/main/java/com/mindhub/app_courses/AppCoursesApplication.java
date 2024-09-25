@@ -33,8 +33,10 @@ public class AppCoursesApplication {
 
 			ClassRoom classRoom = new ClassRoom( 20, "AO123" );
 			classRoomRepository.save(classRoom);
+			ClassRoom classRoom1 = new ClassRoom( 20, "AO123" );
+			classRoomRepository.save(classRoom1);
 
-			WorkShop workShop = new WorkShop(LocalDateTime.now().plusHours(2L));
+			WorkShop workShop = new WorkShop(LocalDateTime.now().plusHours(1L));
 			course.addWorkshop(workShop);
 			classRoom.addWorkshop(workShop);
 			workshopRepository.save(workShop);
@@ -45,7 +47,15 @@ public class AppCoursesApplication {
 //			Person algo = personRepository.findById(1L).orElse(null);
 //
 //			System.out.println( algo instanceof Student);
+			System.out.println(workshopRepository.existsByStartDateBetween(LocalDateTime.now().minusMinutes(30L), LocalDateTime.now().plusMinutes(30L)));
 
+			System.out.println(workshopRepository.existsByStartDateBetweenOrEndDateBetween(
+					LocalDateTime.now().minusMinutes(30L), LocalDateTime.now().plusMinutes(30L),
+					LocalDateTime.now().plusMinutes(30L), LocalDateTime.now().plusMinutes(160L)));
+
+			System.out.println(workshopRepository.existsByClassRoomAndEndDateBetween(
+					classRoom1,
+					LocalDateTime.now().plusMinutes(30L), LocalDateTime.now().plusMinutes(160L)));
 		};
 	}
 }
