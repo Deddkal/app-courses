@@ -2,10 +2,12 @@ package com.mindhub.app_courses;
 
 import com.mindhub.app_courses.models.*;
 import com.mindhub.app_courses.repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 
@@ -16,15 +18,17 @@ public class AppCoursesApplication {
 		SpringApplication.run(AppCoursesApplication.class, args);
 	}
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	@Bean
 	public CommandLineRunner initData(AdminRepository adminRepository, StudentRepository studentRepository, PersonRepository personRepository, TeacherRepository teacherRepository, CourseRepository courseRepository,
 									  WorkshopRepository workshopRepository, ClassRoomRepository classRoomRepository){
 		return args -> {
-			Admin admin = new Admin( "Admin", "admin@mindhub.com", "123456" );
+			Admin admin = new Admin( "Admin", "admin@mindhub.com", passwordEncoder.encode("123456") );
 			adminRepository.save(admin);
-			Student student = new Student("Student" , "student@mindhub.com", "123456", "Melba");
+			Student student = new Student("Student" , "student@mindhub.com", passwordEncoder.encode("123456"), "Melba");
 			studentRepository.save(student);
-			Teacher teacher = new Teacher("Teacher", "teacher@mindhub.com", "123456", "JAVA");
+			Teacher teacher = new Teacher("Teacher", "teacher@mindhub.com", passwordEncoder.encode("123456"), "JAVA");
 			teacherRepository.save(teacher);
 
 			Course course = new Course("JAVA", "Course of JAVA");
